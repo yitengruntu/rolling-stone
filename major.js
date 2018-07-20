@@ -72,8 +72,8 @@ const correctedMajorDownArray = majorCorrector(majorDownArray)
 
 // console.log('up', majorUpArray)
 // console.log('down', majorDownArray)
-console.log('correctionUp', correctedMajorUpArray)
-console.log('correctionDown', correctedMajorDownArray)
+// console.log('correctionUp', correctedMajorUpArray)
+// console.log('correctionDown', correctedMajorDownArray)
 const majorMap = {}
 
 const setArrayToMap = array => {
