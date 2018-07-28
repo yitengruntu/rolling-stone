@@ -2,6 +2,10 @@
 // const downOrder = ['C♭', 'C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B']
 // const majorUp = ['C', 'G', 'D', 'A', 'E', 'B', '#F']
 // const majorDown = ['C', 'F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭']
+const corrector = require('./utils/corrector').corrector
+
+const majorMap = {}
+
 const cMajor = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 
 const majorUpArray = []
@@ -11,7 +15,6 @@ majorDownArray.push(cMajor)
 
 // 升序计算
 const majorUpCal = currentScale => {
-  console.log('currentScaleUp', currentScale)
   const index = 4
   const newScale = currentScale.concat()
   // 调整顺序
@@ -26,7 +29,6 @@ const majorUpCal = currentScale => {
 
 // 降序计算
 const majorDownCal = currentScale => {
-  console.log('currentScaleDown', currentScale)
   const index = 3
   const newScale = currentScale.concat()
   // 调整顺序
@@ -41,6 +43,8 @@ const majorDownCal = currentScale => {
 
 while(majorUpArray.length < 7) {
   majorUpArray.push(majorUpCal(majorUpArray[majorUpArray.length - 1]))
+}
+while(majorDownArray.length < 6) {
   majorDownArray.push(majorDownCal(majorDownArray[majorDownArray.length - 1]))
 }
 // up [ [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ],
@@ -57,31 +61,26 @@ while(majorUpArray.length < 7) {
 //   [ 'bA', 'bB', 'C', 'bD', 'bE', 'F', 'G' ],
 //   [ 'bD', 'bE', 'F', 'bF', 'bA', 'bB', 'C' ],
 //   [ 'bF', 'bA', 'bB', undefined, 'bD', 'bE', 'F' ] ]
-// correction
-const majorCorrector = array => {
-  const correctedArray = []
-  for (const major of array) {
-    const correctedMajor = major.concat(major[0])
-    correctedArray.push(correctedMajor)
-  }
-  return correctedArray
-}
-
-const correctedMajorUpArray = majorCorrector(majorUpArray)
-const correctedMajorDownArray = majorCorrector(majorDownArray)
 
 // console.log('up', majorUpArray)
 // console.log('down', majorDownArray)
 // console.log('correctionUp', correctedMajorUpArray)
 // console.log('correctionDown', correctedMajorDownArray)
-const majorMap = {}
 
-const setArrayToMap = array => {
+const setArrayToMap = (array, map) => {
   for (const major of array) {
     const scale = major[0]
-    majorMap[scale] = major
+    map[scale] = major
   }
 }
-setArrayToMap(correctedMajorUpArray)
-setArrayToMap(correctedMajorDownArray)
-console.log('majorMap', majorMap)
+
+setArrayToMap(majorUpArray, majorMap)
+setArrayToMap(majorDownArray, majorMap)
+// correction
+const correctedMajorMap = corrector(majorMap)
+
+// console.log('majorMap', correctedMajorMap)
+module.exports = {
+  majorMap,
+  correctedMajorMap
+}
